@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italiaanse Wandelingen Kiezer</title>
+    <style>
+        /* Basislayout */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #fef3e0;
+            margin: 0;
+            padding: 16px;
+            color: #4b5563;
+        }
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            background: linear-gradient(to bottom, #fef3c7, #ffedd5);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .inner-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin: 10px;
+        }
+
+        /* Headers */
+        h1 {
+            color: #92400e;
+            text-align: center;
+            font-size: 1.875rem;
+            margin-bottom: 1rem;
+            font-family: Georgia, serif;
+        }
+        h2 {
+            color: #b45309;
+            text-align: center;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            font-family: Georgia, serif;
+        }
+        h3 {
+            color: #92400e;
+            font-size: 1.125rem;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Regio knoppen */
+        .region-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        .region-button {
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid #d97706;
+            background-color: white;
+            color: #b45309;
+            cursor: pointer;
+        }
+        .region-button:hover {
+            background-color: #fef3c7;
+        }
+        .region-button.active {
+            background-color: #d97706;
+            color: white;
+        }
+        .region-button:first-child {
+            border-top-left-radius: 0.375rem;
+            border-bottom-left-radius: 0.375rem;
+        }
+        .region-button:last-child {
+            border-top-right-radius: 0.375rem;
+            border-bottom-right-radius: 0.375rem;
+            border-left: 0;
+        }
+
+        /* Filter & lijst knoppen */
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-button {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: white;
+            background-color: #f59e0b;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .filter-button:hover {
+            background-color: #d97706;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .action-button {
+            flex: 1;
+            padding: 12px 16px;
+            font-weight: 700;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .list-button {
+            background-color: #fbbf24;
+        }
+        .list-button:hover {
+            background-color: #f59e0b;
+        }
+        .random-button {
+            background-color: #d97706;
+        }
+        .random-button:hover {
+            background-color: #b45309;
+        }
+
+        /* Filters panel */
+        .filters-panel {
+            border: 2px solid #d97706;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background-color: #fef3c7;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .filters-title {
+            color: #92400e;
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .close-button {
+            background: none;
+            border: none;
+            color: #b45309;
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+        .filter-label {
+            display: block;
+            color: #92400e;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .filter-select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #d97706;
+            border-radius: 0.375rem;
+            background-color: white;
+        }
+        .apply-filters-button {
+            width: 100%;
+            padding: 8px 16px;
+            background-color: #d97706;
+            color: white;
+            font-weight: 700;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        .apply-filters-button:hover {
+            background-color: #b45309;
+        }
+
+        /* Wandelingen lijst */
+        .wandelingen-lijst {
+            background-color: white;
+            border: 1px solid #d97706;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        .lijst-header {
+            padding: 0.75rem;
+            background-color: #fef3c7;
+            color: #92400e;
+            font-weight: 500;
+            text-align: center;
+        }
+        .lijst-subheader {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+            font-style: italic;
+            color: #b45309;
+            text-align: center;
+            border-bottom: 1px solid #fef3c7;
+        }
+        .wandelingen-items {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .wandeling-item {
+            padding: 0.75rem;
+            border-bottom: 1px solid #fef3c7;
+            cursor: pointer;
+        }
+        .wandeling-item:hover {
+            background-color: #fef3c7;
+        }
+        .wandeling-content {
+            display: flex;
+            align-items: flex-start;
+        }
+        .wandeling-icon {
+            width: 64px;
+            height: 64px;
+            background-color: #fef3c7;
+            border-radius: 0.375rem;
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+        .wandeling-details {
+            flex: 1;
+        }
+        .wandeling-naam {
+            color: #92400e;
+            font-weight: 500;
+            margin: 0 0 0.25rem;
+        }
+        .wandeling-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.25rem;
+        }
+        .wandeling-tag {
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+        .tag-moeilijkheid {
+            color: white;
+        }
+        .moeilijkheid-extreem-makkelijk {
+            background-color: #86efac;
+        }
+        .moeilijkheid-gemakkelijk {
+            background-color: #22c55e;
+        }
+        .moeilijkheid-gemiddeld {
+            background-color: #f59e0b;
+        }
+        .moeilijkheid-moeilijk {
+            background-color: #ef4444;
+        }
+        .tag-duur {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        .tag-horeca {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        /* Geselecteerde wandeling */
+        .wandeling-detail {
+            background-color: white;
+            border: 1px solid #d97706;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .wandeling-afbeelding {
+            height: 192px;
+            background-color: #fef3c7;
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .wandeling-afbeelding-content {
+            padding: 1rem;
+        }
+        .wandeling-emoji {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .wandeling-afbeelding-tekst {
+            font-weight: 500;
+        }
+        .natuur-achtergrond {
+            background-color: #dcfce7;
+        }
+        .natuur-tekst {
+            color: #166534;
+        }
+        .cultuur-achtergrond {
+            background-color: #dbeafe;
+        }
+        .cultuur-tekst {
+            color: #1e40af;
+        }
+        .gastronomie-achtergrond {
+            background-color: #fee2e2;
+        }
+        .gastronomie-tekst {
+            color: #b91c1c;
+        }
+        .actief-achtergrond {
+            background-color: #e0e7ff;
+        }
+        .actief-tekst {
+            color: #4338ca;
+        }
+        .ontspanning-achtergrond {
+            background-color: #ffedd5;
+        }
+        .ontspanning-tekst {
+            color: #9a3412;
+        }
+        .wytze-achtergrond {
+            background-color: #fef3c7;
+        }
+        .wytze-tekst {
+            color: #92400e;
+        }
+        .wandeling-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        .wandeling-titel {
+            color: #92400e;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+            font-family: Georgia, serif;
+        }
+        .groepskeuze-badge {
+            background-color: #dcfce7;
+            color: #166534;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+        }
+        .groepskeuze-button {
+            background-color: #fef3c7;
+            color: #92400e;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+        .groepskeuze-button:hover {
+            background-color: #fde68a;
+        }
+        .wandeling-kenmerken {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .wandeling-kenmerk {
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+        }
+        .wandeling-beschrijving {
+            color: #92400e;
+            font-size: 1rem;
+            margin-top: 0.75rem;
+            margin-bottom: 0;
+        }
+        .wandeling-sectie {
+            margin-top: 1rem;
+        }
+        .wandeling-sectie-titel {
+            color: #92400e;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .wandeling-lijst {
+            margin-top: 0.25rem;
+            margin-left: 1.25rem;
+            color: #92400e;
+        }
+        .wandeling-lijst li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Uitklapbare secties */
+        .uitklapbaar-knop {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            background-color: #fef3c7;
+            border: none;
+            border-radius: 0.5rem;
+            color: #92400e;
+            font-weight: 500;
+            cursor: pointer;
+            text-align: left;
+        }
+        .uitklapbaar-knop:hover {
+            background-color: #fde68a;
+        }
+        .uitklapbaar-content {
+            margin-top: 0.5rem;
+            padding: 0.75rem;
+            background-color: #fef9ef;
+            border: 1px solid #fef3c7;
+            border-radius: 0.5rem;
+        }
+        
+        /* Actieknoppen */
+        .actie-knoppen {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .actie-knop {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+        }
+        .print-knop {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        .print-knop:hover {
+            background-color: #fde68a;
+        }
+        .deel-knop {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        .deel-knop:hover {
+            background-color: #bbf7d0;
+        }
+        
+        /* Groepskeuze banner */
+        .groepskeuze-banner {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        .groepskeuze-info {
+            display: inline-block;
+            padding: 0.5rem;
+            background-color: #dcfce7;
+            border: 1px solid #86efac;
+            border-radius: 0.5rem;
+            color: #166534;
+            font-size: 0.875rem;
+        }
+        
+        /* Nuttig voor het verbergen van elementen */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="inner-container">
+            <h1>Vacanze Italiane</h1>
+            <h2>Scegli il tuo percorso</h2>
+            
+            <div class="region-buttons">
+                <button class="region-button active" data-region="orta" onclick="updateRegio('orta')">Lago d'Orta</button>
+                <button class="region-button" data-region="alba" onclick="updateRegio('alba')">Alba (Piemonte)</button>
+            </div>
+            
+            <div class="button-container">
+                <button class="filter-button" id="filter-button" onclick="filtersPanel.classList.remove('hidden')">
+                    <span style="margin-right: 8px">🔍</span> Filter wandelingen
+                </button>
+                
+                <div class="action-buttons">
+                    <button class="action-button list-button" id="list-button" onclick="resetFilters(); toonWandelingenLijst();">
+                        <span style="margin-right: 4px">📋</span> Toon alle wandelingen
+                    </button>
+                    
+                    <button class="action-button random-button" id="random-button" onclick="kiesRandomWandeling()">
+                        Kies willekeurig
+                    </button>
+                </div>
+            </div>
+            
+            <div class="filters-panel hidden" id="filters-panel">
+                <div class="filters-header">
+                    <h3 class="filters-title">Kies je voorkeuren</h3>
+                    <button class="close-button" id="close-filters" onclick="filtersPanel.classList.add('hidden')">✕</button>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label" for="moeilijkheid">Moeilijkheidsgraad:</label>
+                    <select class="filter-select" id="moeilijkheid">
+                        <option value="alle">Alle niveaus</option>
+                        <option value="Extreem makkelijk">Extreem makkelijk</option>
+                        <option value="Gemakkelijk">Gemakkelijk</option>
+                        <option value="Gemiddeld">Gemiddeld</option>
+                        <option value="Moeilijk">Moeilijk</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label" for="maxduur">Maximale duur:</label>
+                    <select class="filter-select" id="maxduur">
+                        <option value="alle">Geen maximum</option>
+                        <option value="0.08">Max. 5 minuten</option>
+                        <option value="2">Max. 2 uur</option>
+                        <option value="3">Max. 3 uur</option>
+                        <option value="4">Max. 4 uur</option>
+                        <option value="6">Max. 6 uur</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label" for="interesse">Interesse:</label>
+                    <select class="filter-select" id="interesse">
+                        <option value="alle">Alle interesses</option>
+                        <option value="natuur">Natuur</option>
+                        <option value="cultuur">Cultuur & Geschiedenis</option>
+                        <option value="gastronomie">Gastronomie & Wijn</option>
+                        <option value="actief">Actieve wandeling</option>
+                        <option value="ontspanning">Ontspanning</option>
+                    </select>
+                </div>
+                
+                <button class="apply-filters-button" id="apply-filters" onclick="applyFilters()">Toon gefilterde wandelingen</button>
+            </div>
+            
+            <div class="wandelingen-lijst hidden" id="wandelingen-lijst">
+                <div class="lijst-header" id="lijst-header">
+                    Alle wandelingen in Lago d'Orta
+                </div>
+                <div class="lijst-subheader">
+                    Klik op een wandeling om deze te selecteren
+                </div>
+                <ul class="wandelingen-items" id="wandelingen-items">
+                    <!-- Wandelingen worden hier dynamisch toegevoegd -->
+                </ul>
+            </div>
+            
+            <div class="wandeling-detail hidden" id="wandeling-detail">
+                <!-- Geselecteerde wandeling komt hier -->
+            </div>
+            
+            <div class="groepskeuze-banner" id="groepskeuze-banner">
+                <!-- Groepskeuze banner komt hier als er een groepskeuze is -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Wandelingen data
+        const wandelingen = {
+            orta: [
+                { 
+                    naam: "Wytze's rondje rond het zwembad", 
+                    moeilijkheid: "Extreem makkelijk", 
+                    duur: 0.08, 
+                    interesse: ["natuur", "ontspanning", "gastronomie"], 
+                    beschrijving: "De ultieme Italiaanse ervaring zonder al te veel moeite. Drie keer rond het zwembad, aperitivo in de hand, en de zon op je gezicht.", 
+                    hoogtepunten: ["Zero hoogtemeters", "Continue toegang tot water", "Maximale ontspanning"],
+                    horeca: "Bij het zwembad",
+                    seizoen: "Zomer",
+                    reistijd: "0 min"
+                },
+                { 
+                    naam: "Sacro Monte di Orta", 
+                    moeilijkheid: "Gemiddeld", 
+                    duur: 3, 
+                    interesse: ["natuur", "cultuur"], 
+                    beschrijving: "Een prachtige wandeling langs 20 kapellen met uitzicht op het meer.", 
+                    hoogtepunten: ["Panoramisch uitzicht", "Religieuze architectuur", "Rustige paden"],
+                    horeca: "Restaurant bij de top",
+                    seizoen: "Lente/Zomer/Herfst",
+                    reistijd: "10 min met auto"
+                },
+                { 
+                    naam: "Rondom het eiland San Giulio", 
+                    moeilijkheid: "Gemakkelijk", 
+                    duur: 1.5, 
+                    interesse: ["cultuur", "ontspanning"], 
+                    beschrijving: "Boot nemen naar het eiland en dan een rustige wandeling rondom.", 
+                    hoogtepunten: ["Middeleeuwse basiliek", "Pittoreske straatjes", "Waterzichten"],
+                    horeca: "Enkele cafés op het eiland",
+                    seizoen: "Alle seizoenen",
+                    reistijd: "15 min met veerboot"
+                },
+                { 
+                    naam: "Monte Mottarone", 
+                    moeilijkheid: "Moeilijk", 
+                    duur: 6.5, 
+                    interesse: ["actief", "natuur"], 
+                    beschrijving: "Voor wie een uitdaging zoekt, biedt deze berg prachtige panorama's.", 
+                    hoogtepunten: ["Bergtoppen", "Alpenweiden", "Zicht op 7 meren"],
+                    horeca: "Berghut op de top",
+                    seizoen: "Late lente/Zomer/Vroege herfst",
+                    reistijd: "30 min met auto"
+                },
+                { 
+                    naam: "Pella naar Madonna del Sasso", 
+                    moeilijkheid: "Gemiddeld", 
+                    duur: 3.5, 
+                    interesse: ["natuur", "cultuur"], 
+                    beschrijving: "Een mooie tocht met spectaculair uitzicht over het meer.", 
+                    hoogtepunten: ["Heiligdom op de rots", "Bospaden", "Fotogenieke locaties"],
+                    horeca: "Beperkt, neem drankjes mee",
+                    seizoen: "Lente/Zomer/Herfst",
+                    reistijd: "20 min met auto"
+                },
+                { 
+                    naam: "Orta San Giulio dorpswandeling", 
+                    moeilijkheid: "Gemakkelijk", 
+                    duur: 1, 
+                    interesse: ["cultuur", "ontspanning"], 
+                    beschrijving: "Verken het pittoreske historische centrum van dit middeleeuwse dorp.", 
+                    hoogtepunten: ["Historische gebouwen", "Lokale winkeltjes", "Gezellige pleinen"],
+                    horeca: "Vele restaurants en cafés",
+                    seizoen: "Alle seizoenen",
+                    reistijd: "5 min met auto"
+                }
+            ],
+            alba: [
+                { 
+                    naam: "Wytze's rondje rond het zwembad", 
+                    moeilijkheid: "Extreem makkelijk", 
+                    duur: 0.08, 
+                    interesse: ["natuur", "ontspanning", "gastronomie"], 
+                    beschrijving: "De ultieme Italiaanse ervaring zonder al te veel moeite. Drie keer rond het zwembad, aperitivo in de hand, en de zon op je gezicht.", 
+                    hoogtepunten: ["Zero hoogtemeters", "Continue toegang tot water", "Maximale ontspanning"],
+                    horeca: "Bij het zwembad",
+                    seizoen: "Zomer",
+                    reistijd: "0 min"
+                },
+                { 
+                    naam: "Alta Langa wandelroute", 
+                    moeilijkheid: "Gemiddeld", 
+                    duur: 4.5, 
+                    interesse: ["natuur", "gastronomie"], 
+                    beschrijving: "Door de wijngaarden en hazelnootboomgaarden met prachtige uitzichten.", 
+                    hoogtepunten: ["Wijngaarden", "Landelijke dorpjes", "Proeverijen mogelijk"],
+                    horeca: "Wijnhuizen en restaurants in dorpen",
+                    seizoen: "Lente/Zomer/Herfst",
+                    reistijd: "25 min met auto"
+                },
+                { 
+                    naam: "Sentiero del Barbaresco", 
+                    moeilijkheid: "Gemakkelijk", 
+                    duur: 3, 
+                    interesse: ["gastronomie", "cultuur"], 
+                    beschrijving: "Een route langs de beroemde wijngaarden waar de Barbaresco-wijn vandaan komt.", 
+                    hoogtepunten: ["Wijnkastelen", "Proefmogelijkheden", "Glooiende heuvels"],
+                    horeca: "Diverse wijnhuizen",
+                    seizoen: "Lente/Zomer/Herfst",
+                    reistijd: "15 min met auto"
+                },
+                { 
+                    naam: "Roero wandelpaden", 
+                    moeilijkheid: "Moeilijk", 
+                    duur: 5.5, 
+                    interesse: ["actief", "natuur"], 
+                    beschrijving: "Door het natuurgebied met prachtige uitzichten en steile hellingen.", 
+                    hoogtepunten: ["Rotsformaties", "Avontuurlijke paden", "Natuurreservaat"],
+                    horeca: "Beperkt, neem lunch mee",
+                    seizoen: "Lente/Zomer/Vroege herfst",
+                    reistijd: "30 min met auto"
+                },
+                { 
+                    naam: "La Via del Sale", 
+                    moeilijkheid: "Gemiddeld", 
+                    duur: 4, 
+                    interesse: ["cultuur", "natuur"], 
+                    beschrijving: "Een historische route met adembenemende landschappen.", 
+                    hoogtepunten: ["Historische route", "Oude handelsweg", "Diverse landschappen"],
+                    horeca: "Onderweg enkele berghutten",
+                    seizoen: "Zomer",
+                    reistijd: "40 min met auto"
+                },
+                { 
+                    naam: "Tartufo wandeling", 
+                    moeilijkheid: "Gemakkelijk", 
+                    duur: 2, 
+                    interesse: ["gastronomie", "ontspanning"], 
+                    beschrijving: "Een wandeling door de bossen waar de beroemde Alba-truffels worden gevonden.", 
+                    hoogtepunten: ["Truffelbossen", "Lokale gastronomie", "Seizoensgebonden activiteiten"],
+                    horeca: "Restaurants in nabijgelegen dorpen",
+                    seizoen: "Herfst (truffelseizoen)",
+                    reistijd: "15 min met auto"
+                }
+            ]
+        };
+
+        // State
+        let huidigeRegio = 'orta';
+        let filters = {
+            moeilijkheid: 'alle',
+            maxDuur: 'alle',
+            interesse: 'alle'
+        };
+        let gekozenWandeling = null;
+        let groepskeuze = null;
+        
+        // DOM elementen
+        const filtersPanel = document.getElementById('filters-panel');
+        const moeilijkheidSelect = document.getElementById('moeilijkheid');
+        const maxDuurSelect = document.getElementById('maxduur');
+        const interesseSelect = document.getElementById('interesse');
+        const wandelingenLijst = document.getElementById('wandelingen-lijst');
+        const lijstHeader = document.getElementById('lijst-header');
+        const wandelingenItems = document.getElementById('wandelingen-items');
+        const wandelingDetail = document.getElementById('wandeling-detail');
+        const groepskeuzeBanner = document.getElementById('groepskeuze-banner');
+
+        // Functies
+        function updateRegio(regio) {
+            huidigeRegio = regio;
+            const regionButtons = document.querySelectorAll('.region-button');
+            regionButtons.forEach(button => {
+                if (button.dataset.region === regio) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+            if (wandelingenLijst.classList.contains('hidden') === false) {
+                toonWandelingenLijst();
+            }
+        }
+
+        function filterWandelingen() {
+            let result = [...wandelingen[huidigeRegio]];
+            
+            if (filters.moeilijkheid !== 'alle') {
+                result = result.filter(w => w.moeilijkheid === filters.moeilijkheid);
+            }
+            
+            if (filters.maxDuur !== 'alle') {
+                const maxUren = parseFloat(filters.maxDuur);
+                result = result.filter(w => w.duur <= maxUren);
+            }
+            
+            if (filters.interesse !== 'alle') {
+                result = result.filter(w => w.interesse.includes(filters.interesse));
+            }
+            
+            return result;
+        }
+
+        function toonWandelingenLijst() {
+            wandelingenItems.innerHTML = '';
+            const gefilterd = filterWandelingen();
+            
+            if (filters.moeilijkheid === 'alle' && filters.maxDuur === 'alle' && filters.interesse === 'alle') {
+                lijstHeader.textContent = `Alle wandelingen in ${huidigeRegio === 'orta' ? "Lago d'Orta" : "Alba"}`;
+            } else {
+                lijstHeader.textContent = `Gefilterde wandelingen in ${huidigeRegio === 'orta' ? "Lago d'Orta" : "Alba"}`;
+            }
+            
+            if (gefilterd.length === 0) {
+                const emptyItem = document.createElement('li');
+                emptyItem.className = 'wandeling-item';
+                emptyItem.textContent = 'Geen wandelingen gevonden die aan je criteria voldoen';
+                wandelingenItems.appendChild(emptyItem);
+            } else {
+                gefilterd.forEach(wandeling => {
+                    const item = document.createElement('li');
+                    item.className = 'wandeling-item';
+                    item.onclick = function() { selecteerWandeling(wandeling); };
+                    
+                    const content = document.createElement('div');
+                    content.className = 'wandeling-content';
+                    
+                    const icon = document.createElement('div');
+                    icon.className = 'wandeling-icon';
+                    
+                    if (wandeling.naam.includes("Wytze")) {
+                        icon.textContent = '🏊‍♂️';
+                    } else if (wandeling.interesse.includes("natuur")) {
+                        icon.textContent = '🏞️';
+                    } else if (wandeling.interesse.includes("cultuur")) {
+                        icon.textContent = '🏛️';
+                    } else if (wandeling.interesse.includes("gastronomie")) {
+                        icon.textContent = '🍷';
+                    } else if (wandeling.interesse.includes("actief")) {
+                        icon.textContent = '🥾';
+                    } else {
+                        icon.textContent = '☀️';
+                    }
+                    
+                    const details = document.createElement('div');
+                    details.className = 'wandeling-details';
+                    
+                    const naam = document.createElement('h4');
+                    naam.className = 'wandeling-naam';
+                    naam.textContent = wandeling.naam;
+                    
+                    const tags = document.createElement('div');
+                    tags.className = 'wandeling-tags';
+                    
+                    const moeilijkheidTag = document.createElement('span');
+                    moeilijkheidTag.className = `wandeling-tag tag-moeilijkheid moeilijkheid-${wandeling.moeilijkheid.toLowerCase().replace(' ', '-')}`;
+                    moeilijkheidTag.textContent = wandeling.moeilijkheid;
+                    
+                    const duurTag = document.createElement('span');
+                    duurTag.className = 'wandeling-tag tag-duur';
+                    duurTag.textContent = wandeling.duur < 1 
+                        ? `${Math.round(wandeling.duur * 60)} min` 
+                        : `${wandeling.duur} uur`;
+                    
+                    tags.appendChild(moeilijkheidTag);
+                    tags.appendChild(duurTag);
+                    
+                    if (wandeling.horeca) {
+                        const horecaTag = document.createElement('span');
+                        horecaTag.className = 'wandeling-tag tag-horeca';
+                        horecaTag.textContent = '🍽️';
+                        tags.appendChild(horecaTag);
+                    }
+                    
+                    details.appendChild(naam);
+                    details.appendChild(tags);
+                    
+                    content.appendChild(icon);
+                    content.appendChild(details);
+                    
+                    item.appendChild(content);
+                    wandelingenItems.appendChild(item);
+                });
+            }
+            
+            wandelingenLijst.classList.remove('hidden');
+            wandelingDetail.classList.add('hidden');
+        }
+
+        function resetFilters() {
+            filters = {
+                moeilijkheid: 'alle',
+                maxDuur: 'alle',
+                interesse: 'alle'
+            };
+            
+            moeilijkheidSelect.value = 'alle';
+            maxDuurSelect.value = 'alle';
+            interesseSelect.value = 'alle';
+        }
+
+        function applyFilters() {
+            filters.moeilijkheid = moeilijkheidSelect.value;
+            filters.maxDuur = maxDuurSelect.value;
+            filters.interesse = interesseSelect.value;
+            
+            filtersPanel.classList.add('hidden');
+            toonWandelingenLijst();
+        }
+
+        function getAfbeeldingClasses(wandeling) {
+            if (wandeling.naam.includes("Wytze")) {
+                return {
+                    background: 'wytze-achtergrond',
+                    text: 'wytze-tekst',
+                    emoji: '🏊‍♂️ 🍹',
+                    description: 'Het ultieme Italiaanse genot!'
+                };
+            } else if (wandeling.interesse.includes("natuur")) {
+                return {
+                    background: 'natuur-achtergrond',
+                    text: 'natuur-tekst',
+                    emoji: '🏞️ 🌄',
+                    description: 'Prachtige natuurlandschappen'
+                };
+            } else if (wandeling.interesse.includes("cultuur")) {
+                return {
+                    background: 'cultuur-achtergrond',
+                    text: 'cultuur-tekst',
+                    emoji: '🏛️ 🎭',
+                    description: 'Ontdek de rijke cultuur'
+                };
+            } else if (wandeling.interesse.includes("gastronomie")) {
+                return {
+                    background: 'gastronomie-achtergrond',
+                    text: 'gastronomie-tekst',
+                    emoji: '🍷 🍝',
+                    description: 'Culinaire ervaringen'
+                };
+            } else if (wandeling.interesse.includes("actief")) {
+                return {
+                    background: 'actief-achtergrond',
+                    text: 'actief-tekst',
+                    emoji: '🥾 ⛰️',
+                    description: 'Avontuurlijke uitdagingen'
+                };
+            } else {
+                return {
+                    background: 'ontspanning-achtergrond',
+                    text: 'ontspanning-tekst',
+                    emoji: '☀️ 😌',
+                    description: 'Rustige ontspanning'
+                };
+            }
+        }
+
+        function getMoeilijkheidClass(moeilijkheid) {
+            switch(moeilijkheid) {
+                case 'Extreem makkelijk': return 'moeilijkheid-extreem-makkelijk';
+                case 'Gemakkelijk': return 'moeilijkheid-gemakkelijk';
+                case 'Gemiddeld': return 'moeilijkheid-gemiddeld';
+                case 'Moeilijk': return 'moeilijkheid-moeilijk';
+                default: return '';
+            }
+        }
+
+        function getSeizoenEmoji(seizoen) {
+            if (seizoen.includes("Zomer")) return "☀️"; 
+            if (seizoen.includes("Lente")) return "🌷";
+            if (seizoen.includes("Herfst")) return "🍂";
+            return "❄️";
+        }
+
+        function selecteerWandeling(wandeling) {
+            gekozenWandeling = wandeling;
+            wandelingDetail.innerHTML = '';
+            
+            // Visuele classes bepalen
+            const visualClasses = getAfbeeldingClasses(wandeling);
+            
+            // Afbeelding sectie
+            const afbeelding = document.createElement('div');
+            afbeelding.className = `wandeling-afbeelding ${visualClasses.background}`;
+            
+            const afbeeldingContent = document.createElement('div');
+            afbeeldingContent.className = 'wandeling-afbeelding-content';
+            
+            const emoji = document.createElement('div');
+            emoji.className = 'wandeling-emoji';
+            emoji.textContent = visualClasses.emoji;
+            
+            const afbeeldingTekst = document.createElement('div');
+            afbeeldingTekst.className = `wandeling-afbeelding-tekst ${visualClasses.text}`;
+            afbeeldingTekst.textContent = visualClasses.description;
+            
+            afbeeldingContent.appendChild(emoji);
+            afbeeldingContent.appendChild(afbeeldingTekst);
+            afbeelding.appendChild(afbeeldingContent);
+            wandelingDetail.appendChild(afbeelding);
+            
+            // Header sectie
+            const header = document.createElement('div');
+            header.className = 'wandeling-header';
+            
+            const titel = document.createElement('h3');
+            titel.className = 'wandeling-titel';
+            titel.textContent = wandeling.naam;
+            
+            const groepsknop = document.createElement('button');
+            if (groepskeuze && groepskeuze.naam === wandeling.naam) {
+                groepsknop.className = 'groepskeuze-badge';
+                groepsknop.textContent = 'Groepskeuze ✓';
+            } else {
+                groepsknop.className = 'groepskeuze-button';
+                groepsknop.textContent = 'Markeer als groepskeuze';
+                groepsknop.onclick = function() {
+                    groepskeuze = wandeling;
+                    updateGroepskeuzeBanner();
+                    selecteerWandeling(wandeling);
+                };
+            }
+            
+            header.appendChild(titel);
+            header.appendChild(groepsknop);
+            wandelingDetail.appendChild(header);
+            
+            // Kenmerken
+            const kenmerken = document.createElement('div');
+            kenmerken.className = 'wandeling-kenmerken';
+            
+            if (wandeling.moeilijkheid) {
+                const moeilijkheidTag = document.createElement('span');
+                moeilijkheidTag.className = `wandeling-kenmerk tag-moeilijkheid ${getMoeilijkheidClass(wandeling.moeilijkheid)}`;
+                moeilijkheidTag.textContent = wandeling.moeilijkheid;
+                kenmerken.appendChild(moeilijkheidTag);
+            }
+            
+            if (wandeling.duur) {
+                const duurTag = document.createElement('span');
+                duurTag.className = 'wandeling-kenmerk tag-duur';
+                duurTag.textContent = wandeling.duur < 1 
+                    ? `${Math.round(wandeling.duur * 60)} min` 
+                    : `± ${wandeling.duur} uur`;
+                kenmerken.appendChild(duurTag);
+            }
+            
+            if (wandeling.reistijd) {
+                const reistijdTag = document.createElement('span');
+                reistijdTag.className = 'wandeling-kenmerk';
+                reistijdTag.style.backgroundColor = '#f3e8ff';
+                reistijdTag.style.color = '#6b21a8';
+                reistijdTag.textContent = `🚗 ${wandeling.reistijd}`;
+                kenmerken.appendChild(reistijdTag);
+            }
+            
+            if (wandeling.seizoen) {
+                const seizoenTag = document.createElement('span');
+                seizoenTag.className = 'wandeling-kenmerk';
+                seizoenTag.style.backgroundColor = '#fef9c3';
+                seizoenTag.style.color = '#854d0e';
+                seizoenTag.textContent = `${getSeizoenEmoji(wandeling.seizoen)} ${wandeling.seizoen}`;
+                kenmerken.appendChild(seizoenTag);
+            }
+            
+            if (wandeling.horeca) {
+                const horecaTag = document.createElement('span');
+                horecaTag.className = 'wandeling-kenmerk tag-horeca';
+                horecaTag.textContent = `🍽️ ${wandeling.horeca}`;
+                kenmerken.appendChild(horecaTag);
+            }
+            
+            if (wandeling.interesse && wandeling.interesse.length > 0) {
+                wandeling.interesse.forEach(int => {
+                    const interesseTag = document.createElement('span');
+                    interesseTag.className = 'wandeling-kenmerk';
+                    interesseTag.style.backgroundColor = '#fef3c7';
+                    interesseTag.style.color = '#92400e';
+                    interesseTag.textContent = int;
+                    kenmerken.appendChild(interesseTag);
+                });
+            }
+            
+            wandelingDetail.appendChild(kenmerken);
+            
+            // Beschrijving
+            const beschrijving = document.createElement('p');
+            beschrijving.className = 'wandeling-beschrijving';
+            beschrijving.textContent = wandeling.beschrijving;
+            wandelingDetail.appendChild(beschrijving);
+            
+            // Hoogtepunten
+            if (wandeling.hoogtepunten && wandeling.hoogtepunten.length > 0) {
+                const hoogtepuntenSectie = document.createElement('div');
+                hoogtepuntenSectie.className = 'wandeling-sectie';
+                
+                const hoogtepuntenTitel = document.createElement('h4');
+                hoogtepuntenTitel.className = 'wandeling-sectie-titel';
+                hoogtepuntenTitel.textContent = 'Hoogtepunten:';
+                
+                const hoogtepuntenLijst = document.createElement('ul');
+                hoogtepuntenLijst.className = 'wandeling-lijst';
+                
+                wandeling.hoogtepunten.forEach(punt => {
+                    const item = document.createElement('li');
+                    item.textContent = punt;
+                    hoogtepuntenLijst.appendChild(item);
+                });
+                
+                hoogtepuntenSectie.appendChild(hoogtepuntenTitel);
+                hoogtepuntenSectie.appendChild(hoogtepuntenLijst);
+                wandelingDetail.appendChild(hoogtepuntenSectie);
+            }
+            
+            // Actieknoppen
+            const actieKnoppen = document.createElement('div');
+            actieKnoppen.className = 'actie-knoppen';
+            
+            const printKnop = document.createElement('button');
+            printKnop.className = 'actie-knop print-knop';
+            printKnop.innerHTML = '<span style="margin-right: 4px">🖨️</span> Print';
+            printKnop.onclick = function() { window.print(); };
+            
+            const deelKnop = document.createElement('button');
+            deelKnop.className = 'actie-knop deel-knop';
+            deelKnop.innerHTML = '<span style="margin-right: 4px">📱</span> Deel';
+            deelKnop.onclick = function() {
+                alert('Link gekopieerd! Je kunt deze nu in WhatsApp plakken.');
+            };
+            
+            actieKnoppen.appendChild(printKnop);
+            actieKnoppen.appendChild(deelKnop);
+            wandelingDetail.appendChild(actieKnoppen);
+            
+            // Toon detail, verberg lijst
+            wandelingDetail.classList.remove('hidden');
+            wandelingenLijst.classList.add('hidden');
+            filtersPanel.classList.add('hidden');
+        }
+
+        function updateGroepskeuzeBanner() {
+            groepskeuzeBanner.innerHTML = '';
+            
+            if (groepskeuze) {
+                const info = document.createElement('div');
+                info.className = 'groepskeuze-info';
+                info.innerHTML = `Jullie groepskeuze: <strong>${groepskeuze.naam}</strong> <span style="margin-left: 4px">(${groepskeuze.duur < 1 ? `${Math.round(groepskeuze.duur * 60)} min` : `${groepskeuze.duur} uur`})</span>`;
+                groepskeuzeBanner.appendChild(info);
+            }
+        }
+
+        function kiesRandomWandeling() {
+            const gefilterd = filterWandelingen();
+            
+            if (gefilterd.length === 0) {
+                alert('Er zijn geen wandelingen die aan je criteria voldoen. Probeer andere filters.');
+                return;
+            }
+            
+            const randomIndex = Math.floor(Math.random() * gefilterd.length);
+            selecteerWandeling(gefilterd[randomIndex]);
+        }
+
+        // Initialisatie
+        updateRegio('orta');
+        updateGroepskeuzeBanner();
+    </script>
+</body>
+</html>
